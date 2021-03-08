@@ -16,7 +16,7 @@ from utils import L2_loss, to_pickle, from_pickle
 
 def get_args():
     parser = argparse.ArgumentParser(description=None)
-    parser.add_argument('--input_dim', default=2*4, type=int, help='dimensionality of input tensor')
+    parser.add_argument('--input_dim', default=4, type=int, help='dimensionality of input tensor')
     parser.add_argument('--hidden_dim', default=200, type=int, help='hidden dimension of mlp')
     parser.add_argument('--learn_rate', default=1e-3, type=float, help='learning rate')
     parser.add_argument('--batch_size', default=200, type=int, help='batch_size')
@@ -49,11 +49,15 @@ def train(args):
   optim = torch.optim.Adam(model.parameters(), args.learn_rate, weight_decay=0)
 
   # arrange data
-  data = get_dataset(args.name, args.save_dir, verbose=True)
-  x = torch.tensor( data['coords'], requires_grad=True, dtype=torch.float32)
-  test_x = torch.tensor( data['test_coords'], requires_grad=True, dtype=torch.float32)
-  dxdt = torch.Tensor(data['dcoords'])
-  test_dxdt = torch.Tensor(data['test_dcoords'])
+  X = np.load('inputs.npy')
+  Y = np.load('outputs.npy')
+  Y[~np.isfinite(Y)] = 0
+  n_egs = X.shape[0]
+  x = torch.tensor(X[0:int(0.8*n_egs),:], requires_grad=True, dtype=torch.float32)
+  test_x = torch.tensor(X[:-int(0.2*n_egs),:], requires_grad=True, dtype=torch.float32)
+  dxdt = torch.Tensor(Y[0:int(0.8*n_egs),:])
+  test_dxdt = torch.Tensor(Y[:-int(0.2*n_egs),:])
+
 
   # vanilla train loop
   stats = {'train_loss': [], 'test_loss': []}
