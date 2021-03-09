@@ -13,7 +13,7 @@ class HNN(torch.nn.Module):
                     baseline=False, assume_canonical_coords=True, device='cpu'):
         super(HNN, self).__init__()
         self.baseline = baseline
-        self.differentiable_model = differentiable_model.to(device)
+        self.differentiable_model = differentiable_model
         self.assume_canonical_coords = assume_canonical_coords
         self.M = self.permutation_tensor(input_dim).to(device)# Levi-Civita permutation tensor
         self.field_type = field_type
