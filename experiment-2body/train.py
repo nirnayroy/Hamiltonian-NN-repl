@@ -18,7 +18,7 @@ def get_args():
     parser = argparse.ArgumentParser(description=None)
     parser.add_argument('--input_dim', default=4, type=int, help='dimensionality of input tensor')
     parser.add_argument('--hidden_dim', default=512, type=int, help='hidden dimension of mlp')
-    parser.add_argument('--learn_rate', default=1e-5, type=float, help='learning rate')
+    parser.add_argument('--learn_rate', default=1e-7, type=float, help='learning rate')
     parser.add_argument('--batch_size', default=20000, type=int, help='batch_size')
     parser.add_argument('--input_noise', default=0.0, type=int, help='std of noise added to inputs')
     parser.add_argument('--nonlinearity', default='tanh', type=str, help='neural net nonlinearity')
