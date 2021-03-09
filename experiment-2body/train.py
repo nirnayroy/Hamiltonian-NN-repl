@@ -68,6 +68,7 @@ def train(args):
     dxdt_hat = model.time_derivative(x[ixs])
     dxdt_hat += args.input_noise * torch.randn(*x[ixs].shape) # add noise, maybe
     loss = L2_loss(dxdt[ixs], dxdt_hat)
+    print(loss)
     loss.backward()
     grad = torch.cat([p.grad.flatten() for p in model.parameters()]).clone()
     optim.step() ; optim.zero_grad()
@@ -75,7 +76,7 @@ def train(args):
     # run test data
     test_ixs = torch.randperm(test_x.shape[0])[:args.batch_size]
     test_dxdt_hat = model.time_derivative(test_x[test_ixs])
-    test_dxdt_hat += args.input_noise * torch.randn(*test_x[test_ixs].shape) # add noise, maybe
+    #test_dxdt_hat += args.input_noise * torch.randn(*test_x[test_ixs].shape) # add noise, maybe
     test_loss = L2_loss(test_dxdt[test_ixs], test_dxdt_hat)
 
     # logging
