@@ -110,3 +110,15 @@ def make_gif(frames, save_dir, name='pendulum', duration=1e-1, pixels=None, divi
 
     shutil.rmtree(temp_dir) # remove all the images
     return png_save_path
+def give_min_and_dist(X):
+    m = X.min()
+    d = X.max()-X.min()
+    return m, d
+
+def scale(X, m, d):
+    X = (X-m)/d
+    return X
+
+def unscale(X,m d):
+    X = (X*d)+m
+    return X

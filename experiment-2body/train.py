@@ -12,14 +12,14 @@ sys.path.append(PARENT_DIR)
 from nn_models import MLP
 from hnn import HNN
 from data import get_dataset
-from utils import L2_loss, to_pickle, from_pickle
+from utils import L2_loss, to_pickle, from_pickle, give_min_and_dist, scale, unscale
 
 def get_args():
     parser = argparse.ArgumentParser(description=None)
     parser.add_argument('--input_dim', default=4, type=int, help='dimensionality of input tensor')
     parser.add_argument('--hidden_dim', default=512, type=int, help='hidden dimension of mlp')
     parser.add_argument('--learn_rate', default=1e-3, type=float, help='learning rate')
-    parser.add_argument('--batch_size', default=20000, type=int, help='batch_size')
+    parser.add_argument('--batch_size', default=2000, type=int, help='batch_size')
     parser.add_argument('--input_noise', default=0.0, type=int, help='std of noise added to inputs')
     parser.add_argument('--nonlinearity', default='tanh', type=str, help='neural net nonlinearity')
     parser.add_argument('--total_steps', default=10000, type=int, help='number of gradient steps')
@@ -52,6 +52,10 @@ def train(args):
   X = np.load('inputs.npy')
   Y = np.load('outputs.npy')
   Y[~np.isfinite(Y)] = 0
+  xm, xd = give_min_and_dist(X)
+  ym, yd= give_min_and_dist(Y)
+  X = scale(X, xm, xd)
+  Y = scale(Y, ym, yd)
   n_egs = X.shape[0]
   x = torch.tensor(X[0:int(0.8*n_egs),:], requires_grad=True, dtype=torch.float32)
   test_x = torch.tensor(X[:-int(0.2*n_egs),:], requires_grad=True, dtype=torch.float32)
