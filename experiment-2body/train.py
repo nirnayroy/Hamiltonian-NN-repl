@@ -46,6 +46,8 @@ def train(args):
   nn_model = MLP(args.input_dim, args.hidden_dim, output_dim, args.nonlinearity)
   model = HNN(args.input_dim, differentiable_model=nn_model,
             field_type=args.field_type, baseline=args.baseline)
+  device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+  model.to(device)
   optim = torch.optim.Adam(model.parameters(), args.learn_rate, weight_decay=0)
 
   # arrange data
