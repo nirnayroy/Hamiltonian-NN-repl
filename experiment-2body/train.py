@@ -63,8 +63,8 @@ def train(args):
   n_egs = X.shape[0]
   x = torch.tensor(X[0:int(0.8*n_egs),:], requires_grad=True, dtype=torch.float32, device=device)
   test_x = torch.tensor(X[:-int(0.2*n_egs),:], requires_grad=True, dtype=torch.float32, device=device)
-  dxdt = torch.Tensor(Y[0:int(0.8*n_egs),:], device=device)
-  test_dxdt = torch.Tensor(Y[:-int(0.2*n_egs),:], device=device)
+  dxdt = torch.tensor(Y[0:int(0.8*n_egs),:], device=device)
+  test_dxdt = torch.tensor(Y[:-int(0.2*n_egs),:], device=device)
 
 
   # vanilla train loop
