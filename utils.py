@@ -119,6 +119,6 @@ def scale(X, m, d):
     X = (X-m)/d
     return X
 
-def unscale(X,m d):
+def unscale(X,m, d):
     X = (X*d)+m
     return X
