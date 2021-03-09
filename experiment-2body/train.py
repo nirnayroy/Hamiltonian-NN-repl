@@ -47,7 +47,7 @@ def train(args):
   nn_model = MLP(args.input_dim, args.hidden_dim, output_dim, args.nonlinearity)
   nn_model.to(device)
   model = HNN(args.input_dim, differentiable_model=nn_model,
-            field_type=args.field_type, baseline=args.baseline, device=device)
+            field_type=args.field_type, baseline=args.baseline, device)
 
   model.to(device)
   optim = torch.optim.Adam(model.parameters(), args.learn_rate, weight_decay=0)
@@ -61,10 +61,10 @@ def train(args):
   X = scale(X, xm, xd)
   Y = scale(Y, ym, yd)
   n_egs = X.shape[0]
-  x = torch.tensor(X[0:int(0.8*n_egs),:], requires_grad=True, dtype=torch.float32, device=device)
-  test_x = torch.tensor(X[:-int(0.2*n_egs),:], requires_grad=True, dtype=torch.float32, device=device)
-  dxdt = torch.tensor(Y[0:int(0.8*n_egs),:], device=device)
-  test_dxdt = torch.tensor(Y[:-int(0.2*n_egs),:], device=device)
+  x = torch.tensor(X[0:int(0.8*n_egs),:], requires_grad=True, dtype=torch.float32)
+  test_x = torch.tensor(X[:-int(0.2*n_egs),:], requires_grad=True, dtype=torch.float32)
+  dxdt = torch.tensor(Y[0:int(0.8*n_egs),:])
+  test_dxdt = torch.tensor(Y[:-int(0.2*n_egs),:])
 
 
   # vanilla train loop
@@ -73,7 +73,8 @@ def train(args):
 
     # train step
     ixs = torch.randperm(x.shape[0])[:args.batch_size]
-    dxdt_hat = model.time_derivative(x[ixs])
+
+    dxdt_hat = model.time_derivative(x[ixs].to(device))
     loss = L2_loss(dxdt[ixs], dxdt_hat)
     loss.backward()
     grad = torch.cat([p.grad.flatten() for p in model.parameters()]).clone()
