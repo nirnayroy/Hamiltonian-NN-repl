@@ -74,7 +74,7 @@ def train(args):
     # train step
     ixs = torch.randperm(x.shape[0])[:args.batch_size]
 
-    dxdt_hat = model.time_derivative(x[ixs].to(device))
+    dxdt_hat = model.time_derivative(x[ixs])
     loss = L2_loss(dxdt[ixs].to(device), dxdt_hat)
     loss.backward()
     grad = torch.cat([p.grad.flatten() for p in model.parameters()]).clone()
