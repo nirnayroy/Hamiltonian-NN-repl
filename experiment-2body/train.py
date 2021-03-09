@@ -37,17 +37,18 @@ def train(args):
   # set random seed
   torch.manual_seed(args.seed)
   np.random.seed(args.seed)
-
+  device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+  print(device)
   # init model and optimizer
   if args.verbose:
     print("Training baseline model:" if args.baseline else "Training HNN model:")
 
   output_dim = args.input_dim if args.baseline else 2
   nn_model = MLP(args.input_dim, args.hidden_dim, output_dim, args.nonlinearity)
+  nn_model.to(device)
   model = HNN(args.input_dim, differentiable_model=nn_model,
             field_type=args.field_type, baseline=args.baseline)
-  device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-  nn_model.to(device)
+
   model.to(device)
   optim = torch.optim.Adam(model.parameters(), args.learn_rate, weight_decay=0)
 
