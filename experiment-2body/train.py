@@ -61,10 +61,10 @@ def train(args):
   X = scale(X, xm, xd)
   Y = scale(Y, ym, yd)
   n_egs = X.shape[0]
-  x = torch.tensor(X[0:int(0.8*n_egs),:], requires_grad=True, dtype=torch.float32)
-  test_x = torch.tensor(X[:-int(0.2*n_egs),:], requires_grad=True, dtype=torch.float32)
-  dxdt = torch.tensor(Y[0:int(0.8*n_egs),:])
-  test_dxdt = torch.tensor(Y[:-int(0.2*n_egs),:])
+  x = torch.tensor(X[0:int(0.8*n_egs),:], requires_grad=True, dtype=torch.float32).to(device)
+  test_x = torch.tensor(X[:-int(0.2*n_egs),:], requires_grad=True, dtype=torch.float32).to(device)
+  dxdt = torch.tensor(Y[0:int(0.8*n_egs),:]).to(device)
+  test_dxdt = torch.tensor(Y[:-int(0.2*n_egs),:]).to(device)
 
 
   # vanilla train loop
@@ -75,7 +75,7 @@ def train(args):
     ixs = torch.randperm(x.shape[0])[:args.batch_size]
 
     dxdt_hat = model.time_derivative(x[ixs])
-    loss = L2_loss(dxdt[ixs].to(device), dxdt_hat)
+    loss = L2_loss(dxdt[ixs], dxdt_hat)
     loss.backward()
     grad = torch.cat([p.grad.flatten() for p in model.parameters()]).clone()
     optim.step() ; optim.zero_grad()
