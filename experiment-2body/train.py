@@ -61,9 +61,9 @@ def train(args):
   X = scale(X, xm, xd)
   Y = scale(Y, ym, yd)
   n_egs = X.shape[0]
-  x = torch.tensor(X[0:int(0.8*n_egs),:], requires_grad=True, dtype=torch.float32)
+  x = X[0:int(0.8*n_egs),:]
   test_x = torch.tensor(X[:-int(0.2*n_egs),:], requires_grad=True, dtype=torch.float32)
-  dxdt = torch.tensor(Y[0:int(0.8*n_egs),:])
+  dxdt = Y[0:int(0.8*n_egs),:]
   test_dxdt = torch.tensor(Y[:-int(0.2*n_egs),:])
 
 
@@ -73,10 +73,10 @@ def train(args):
 
     # train step
     ixs = torch.randperm(x.shape[0])[:args.batch_size]
-    x = x[ixs]
+    x = torch.tensor(x[ixs], requires_grad=True, dtype=torch.float32)
     x.to(device)
     dxdt_hat = model.time_derivative(x)
-    y = dxdt[ixs]
+    y = torch.tensor(dxdt[ixs])
     y.to(device)
     loss = L2_loss(y, dxdt_hat)
     loss.backward()
