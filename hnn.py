@@ -15,9 +15,8 @@ class HNN(torch.nn.Module):
         self.baseline = baseline
         self.differentiable_model = differentiable_model
         self.assume_canonical_coords = assume_canonical_coords
-        self.M = self.permutation_tensor(input_dim) # Levi-Civita permutation tensor
+        self.M = torch.tensor(self.permutation_tensor(input_dim), device=device) # Levi-Civita permutation tensor
         self.field_type = field_type
-        self.device=device
 
     def forward(self, x):
         # traditional forward pass
@@ -70,7 +69,7 @@ class HNN(torch.nn.Module):
             for i in range(n): # make asymmetric
                 for j in range(i+1, n):
                     M[i,j] *= -1
-        return torch.tensor(M, device=self.device)
+        return M
 
 
 class PixelHNN(torch.nn.Module):
