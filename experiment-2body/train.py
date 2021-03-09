@@ -47,7 +47,7 @@ def train(args):
   nn_model = MLP(args.input_dim, args.hidden_dim, output_dim, args.nonlinearity)
   nn_model.to(device)
   model = HNN(args.input_dim, differentiable_model=nn_model,
-            field_type=args.field_type, baseline=args.baseline, device)
+            field_type=args.field_type, baseline=args.baseline, device=device)
 
   model.to(device)
   optim = torch.optim.Adam(model.parameters(), args.learn_rate, weight_decay=0)
