@@ -15,7 +15,7 @@ class HNN(torch.nn.Module):
         self.baseline = baseline
         self.differentiable_model = differentiable_model
         self.assume_canonical_coords = assume_canonical_coords
-        self.M = torch.tensor(self.permutation_tensor(input_dim), device=device) # Levi-Civita permutation tensor
+        self.M = self.permutation_tensor(input_dim).to(device)# Levi-Civita permutation tensor
         self.field_type = field_type
 
     def forward(self, x):
