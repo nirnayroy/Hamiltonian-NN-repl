@@ -9,9 +9,9 @@ class MLP(torch.nn.Module):
   '''Just a salt-of-the-earth MLP'''
   def __init__(self, input_dim, hidden_dim, output_dim, nonlinearity='tanh', device='cpu'):
     super(MLP, self).__init__()
-    self.linear1 = torch.nn.Linear(input_dim, hidden_dim).to(device)
-    self.linear2 = torch.nn.Linear(hidden_dim, hidden_dim).to(device)
-    self.linear3 = torch.nn.Linear(hidden_dim, output_dim, bias=None).to(device)
+    self.linear1 = torch.nn.Linear(input_dim, hidden_dim)
+    self.linear2 = torch.nn.Linear(hidden_dim, hidden_dim)
+    self.linear3 = torch.nn.Linear(hidden_dim, output_dim, bias=None)
 
     for l in [self.linear1, self.linear2, self.linear3]:
       torch.nn.init.orthogonal_(l.weight) # use a principled initialization
