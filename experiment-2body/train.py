@@ -45,7 +45,7 @@ def train(args):
 
   output_dim = args.input_dim if args.baseline else 2
   nn_model = MLP(args.input_dim, args.hidden_dim, output_dim, args.nonlinearity, device=device)
-  model = HNN(args.input_dim, differentiable_model=nn_model.to(device),
+  model = HNN(args.input_dim, differentiable_model=nn_model,
             field_type=args.field_type, baseline=args.baseline, device=device)
 
   model.to(device)
