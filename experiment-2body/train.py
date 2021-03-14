@@ -22,7 +22,7 @@ def get_args():
     parser.add_argument('--batch_size', default=200, type=int, help='batch_size')
     parser.add_argument('--input_noise', default=0.0, type=int, help='std of noise added to inputs')
     parser.add_argument('--nonlinearity', default='tanh', type=str, help='neural net nonlinearity')
-    parser.add_argument('--total_steps', default=500, type=int, help='number of gradient steps')
+    parser.add_argument('--total_steps', default=1000, type=int, help='number of gradient steps')
     parser.add_argument('--print_every', default=200, type=int, help='number of gradient steps between prints')
     parser.add_argument('--name', default='2body', type=str, help='only one option right now')
     parser.add_argument('--baseline', dest='baseline', action='store_true', help='run baseline or experiment?')
@@ -53,8 +53,8 @@ def train(args):
   optim = torch.optim.Adam(model.parameters(), args.learn_rate, weight_decay=0)
 
   # arrange data
-  X = np.load('inputs.npy')
-  Y = np.load('outputs.npy')
+  X = np.load('statrectinputs.npy')
+  Y = np.load('statrectoutputs.npy')
   Y[~np.isfinite(Y)] = 0
   xm, xd = give_min_and_dist(X)
   ym, yd= give_min_and_dist(Y)
@@ -95,7 +95,7 @@ def train(args):
     if args.verbose and step % args.print_every == 0:
       print("step {}, train_loss {:.4e}, test_loss {:.4e}, grad norm {:.4e}, grad std {:.4e}"
           .format(step, loss.item(), test_loss.item(), grad@grad, grad.std()))
-
+  '''
   train_dxdt_hat = model.time_derivative(x)
   train_dist = (dxdt - train_dxdt_hat)**2
   test_dxdt_hat = model.time_derivative(test_x)
@@ -103,6 +103,7 @@ def train(args):
   print('Final train loss {:.4e} +/- {:.4e}\nFinal test loss {:.4e} +/- {:.4e}'
     .format(train_dist.mean().item(), train_dist.std().item()/np.sqrt(train_dist.shape[0]),
             test_dist.mean().item(), test_dist.std().item()/np.sqrt(test_dist.shape[0])))
+  '''
   return model, stats
 
 if __name__ == "__main__":
