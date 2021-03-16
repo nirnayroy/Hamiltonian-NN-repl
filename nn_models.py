@@ -1,5 +1,7 @@
 # Hamiltonian Neural Networks | 2019
 # Sam Greydanus, Misko Dzamba, Jason Yosinski
+# Hamiltonian Neural Networks | 2019
+# Sam Greydanus, Misko Dzamba, Jason Yosinski
 
 import torch
 import numpy as np

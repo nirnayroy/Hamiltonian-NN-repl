@@ -27,7 +27,7 @@ class HNN(torch.nn.Module):
         return y.split(1,1)
 
     def encoding(self, x):
-        return self.differentiable_model.encode()
+        return self.differentiable_model.encode(x)
 
     def rk4_time_derivative(self, x, dt):
         return rk4(fun=self.time_derivative, y0=x, t=0, dt=dt)

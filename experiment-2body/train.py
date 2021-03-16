@@ -3,6 +3,8 @@
 
 import torch, argparse
 import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
 
 import os, sys
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -96,13 +98,18 @@ def train(args):
     if args.verbose and step % args.print_every == 0:
       print("step {}, train_loss {:.4e}, test_loss {:.4e}, grad norm {:.4e}, grad std {:.4e}"
           .format(step, loss.item(), test_loss.item(), grad@grad, grad.std()))
-  ixs = torch.randperm(x.shape[0])[:1000]
+  ixs = torch.randperm(x.shape[0])[:10000]
   x = torch.tensor(x[ixs], requires_grad=True, dtype=torch.float32)
   x.to(device)
-  enc = model.encoding(x)
-  img = ax.scatter(enc[1], enc[2], enc[3], c=enc[4], cmap=plt.hot())
+  enc = model.encoding(x).detach().numpy()
+  print(x.shape)
+  fig = plt.figure()
+  ax = fig.add_subplot(111, projection='3d')
+  x = x.detach().numpy()
+  img = ax.scatter(enc[:,0], enc[:,3], enc[:,2], c=enc[:,1], cmap=plt.hot())
   fig.colorbar(img)
-  plt.show()
+  plt.savefig('lrep.png')
+
   return model,  stats
 
 
