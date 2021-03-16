@@ -45,14 +45,14 @@ class MLPAutoencoder(torch.nn.Module):
 
   def encode(self, x):
     h = self.nonlinearity( self.linear1(x) )
-    h = h + self.nonlinearity( self.linear2(h) )
-    h = h + self.nonlinearity( self.linear3(h) )
+    h = self.nonlinearity( self.linear2(h) )
+    h = self.nonlinearity( self.linear3(h) )
     return self.linear4(h)
 
   def decode(self, z):
     h = self.nonlinearity( self.linear5(z) )
-    h = h + self.nonlinearity( self.linear6(h) )
-    h = h + self.nonlinearity( self.linear7(h) )
+    h = self.nonlinearity( self.linear6(h) )
+    h = self.nonlinearity( self.linear7(h) )
     return self.linear8(h)
 
   def forward(self, x):
