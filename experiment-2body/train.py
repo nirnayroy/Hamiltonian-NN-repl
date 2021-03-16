@@ -52,7 +52,7 @@ def train(args):
 
   model.to(device)
   optim = torch.optim.Adam(model.parameters(), args.learn_rate, weight_decay=0)
-
+  
   # arrange data
   X = np.load('statrectinputs.npy')
   Y = np.load('statrectoutputs.npy')

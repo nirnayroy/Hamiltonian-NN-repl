@@ -19,8 +19,8 @@ class MLP(torch.nn.Module):
     self.nonlinearity = choose_nonlinearity(nonlinearity)
 
   def forward(self, x, separate_fields=False):
-    h = self.nonlinearity( self.linear1(x) )
-    h = self.nonlinearity( self.linear2(h) )
+    h = self.nonlinearity(self.linear1(x))
+    h = self.nonlinearity(self.linear2(h))
     return self.linear3(h)
 
 class MLPAutoencoder(torch.nn.Module):
@@ -35,7 +35,7 @@ class MLPAutoencoder(torch.nn.Module):
     self.linear5 = torch.nn.Linear(latent_dim, hidden_dim)
     self.linear6 = torch.nn.Linear(hidden_dim, hidden_dim)
     self.linear7 = torch.nn.Linear(hidden_dim, hidden_dim)
-    self.linear8 = torch.nn.Linear(hidden_dim, input_dim)
+    self.linear8 = torch.nn.Linear(hidden_dim, 2)
 
     for l in [self.linear1, self.linear2, self.linear3, self.linear4, \
               self.linear5, self.linear6, self.linear7, self.linear8]:
