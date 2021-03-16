@@ -49,7 +49,6 @@ def train(args):
   nn_model.to(device)
   model = HNN(args.input_dim, differentiable_model=nn_model,
             field_type=args.field_type, baseline=args.baseline, device=device)
-
   model.to(device)
   optim = torch.optim.Adam(model.parameters(), args.learn_rate, weight_decay=0)
   
@@ -100,7 +99,7 @@ def train(args):
   ixs = torch.randperm(x.shape[0])[:1000]
   x = torch.tensor(x[ixs], requires_grad=True, dtype=torch.float32)
   x.to(device)
-  enc = model.encoding(x)
+  enc = model.encode(x)
   img = ax.scatter(enc[1], enc[2], enc[3], c=enc[4], cmap=plt.hot())
   fig.colorbar(img)
   plt.show()
