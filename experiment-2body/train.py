@@ -99,7 +99,7 @@ def train(args):
   ixs = torch.randperm(x.shape[0])[:1000]
   x = torch.tensor(x[ixs], requires_grad=True, dtype=torch.float32)
   x.to(device)
-  enc = model.encode(x)
+  enc = model.encoding(x)
   img = ax.scatter(enc[1], enc[2], enc[3], c=enc[4], cmap=plt.hot())
   fig.colorbar(img)
   plt.show()
