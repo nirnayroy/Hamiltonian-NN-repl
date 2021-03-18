@@ -70,7 +70,7 @@ def get_orbit(state, update_fn=update, t_points=100, t_span=[0,2], **kwargs):
 
     path = solve_ivp(fun=update_fn, t_span=t_span, y0=state.flatten(),
                      t_eval=t_eval, **kwargs)
-    orbit = path['y'].reshape(nbodies, 5, t_points)
+    orbit = path['y'].reshape(1, 4, t_points)
     return orbit, orbit_settings
 
 
