@@ -127,7 +127,7 @@ def model_update(t, state, model):
     np_x = np_x.T.flatten()[None, :]
     x = torch.tensor(np_x, requires_grad=True, dtype=torch.float32)
     dx_hat = model.time_derivative(x)
-    deriv[:,1:] = dx_hat.detach().data.numpy().reshape(4,1).T
+    deriv[:,0:] = dx_hat.detach().data.numpy().reshape(4,1).T
     return deriv.reshape(-1)
 
 if __name__ == "__main__":
