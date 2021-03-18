@@ -123,7 +123,6 @@ def model_update(t, state, model):
     state = state.reshape(-1,4)
 
     deriv = np.zeros_like(state)
-    np_x = state[:,1:] # drop mass
     np_x = np_x.T.flatten()[None, :]
     x = torch.tensor(np_x, requires_grad=True, dtype=torch.float32)
     dx_hat = model.time_derivative(x)
