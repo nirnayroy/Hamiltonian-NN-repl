@@ -110,7 +110,17 @@ def train(args):
   fig.colorbar(img)
   plt.savefig('lrep.png')
 
+  sample_orbit = sample_orbit(model, [0,10], [0.4, 0.3, 1/np.sqrt(2), 1/np.sqrt(2)])
+  print(sample_orbit.y)
+  plt.scatter(sample_orbit.y[0], sample_orbit.y[1])
+  plt.savefig('orbit.png')
+
   return model,  stats
+
+  def sample_orbit(model, t_eval, y0):
+    t_span = [t_eval[0], t_eval[-1]]
+    solution = scipy.integrate.solve_ivp(model, t_span, y0)
+    return solution.y
 
 
 if __name__ == "__main__":
@@ -123,3 +133,4 @@ if __name__ == "__main__":
   label = 'baseline' if args.baseline else 'hnn'
   path = '{}/{}-orbits-{}.tar'.format(args.save_dir, args.name, label)
   torch.save(model.state_dict(), path)
+
