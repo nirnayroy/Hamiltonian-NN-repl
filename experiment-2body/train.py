@@ -120,7 +120,7 @@ def train(args):
   return model,  stats
 
 def model_update(t, state, model):
-    state = state.reshape(-1,5)
+    state = state.reshape(-1,4)
 
     deriv = np.zeros_like(state)
     np_x = state[:,1:] # drop mass
