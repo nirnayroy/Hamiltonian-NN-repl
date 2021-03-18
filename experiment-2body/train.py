@@ -5,6 +5,7 @@ import torch, argparse
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
+import scipy
 
 import os, sys
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
