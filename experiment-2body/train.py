@@ -111,7 +111,7 @@ def train(args):
   fig.colorbar(img)
   plt.savefig('lrep.png')
 
-  orbit = sample_orbit(model, [0,10], [0.4, 0.3, 1/np.sqrt(2), 1/np.sqrt(2)])
+  orbit = sample_orbit(model.time_derivative, [0,10], [0.4, 0.3, 1/np.sqrt(2), 1/np.sqrt(2)])
   print(orbit.y)
   plt.scatter(orbit.y[0], orbit.y[1])
   plt.savefig('orbit.png')
