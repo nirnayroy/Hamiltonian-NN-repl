@@ -34,6 +34,7 @@ class HNN(torch.nn.Module):
 
     def time_derivative(self, x, t=None, separate_fields=False):
         '''NEURAL ODE-STLE VECTOR FIELD'''
+        x = torch.tensor(x, requires_grad=True, dtype=tf.float32)
         if self.baseline:
             return self.differentiable_model(x)
 
