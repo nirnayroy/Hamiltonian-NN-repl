@@ -14,7 +14,7 @@ sys.path.append(PARENT_DIR)
 
 from nn_models import MLPAutoencoder
 from hnn import HNN
-from data import get_dataset
+from data import get_orbit
 from utils import L2_loss, to_pickle, from_pickle, give_min_and_dist, scale, unscale
 
 def get_args():
@@ -111,18 +111,25 @@ def train(args):
   fig.colorbar(img)
   plt.savefig('lrep.png')
   y0 = torch.tensor([0.4, 0.3, 1/np.sqrt(2), 1/np.sqrt(2)], dtype=torch.float32)
-  orbit = sample_orbit(model.time_derivative, [0,10], y0)
-  print(orbit.y)
-  plt.scatter(orbit.y[0], orbit.y[1])
+  update_fn = lambda t, y0: model_update(t, y0, model)
+  base_orbit, settings = get_orbit(state, t_points=t_points, t_span=t_span, update_fn=update_fn)
+  orbit, _ = get_orbit(y0, model.time_derivative, [0,10], y0)
+  print(orbit)
+  plt.scatter(orbit[:,0], orbit[:, 1])
   plt.savefig('orbit.png')
 
   return model,  stats
 
-def sample_orbit(model, t_eval, y0):
-  t_span = [t_eval[0], t_eval[-1]]
-  solution = scipy.integrate.solve_ivp(model, t_span, y0)
-  return solution.y
+def model_update(t, state, model):
+    state = state.reshape(-1,5)
 
+    deriv = np.zeros_like(state)
+    np_x = state[:,1:] # drop mass
+    np_x = np_x.T.flatten()[None, :]
+    x = torch.tensor(np_x, requires_grad=True, dtype=torch.float32)
+    dx_hat = model.time_derivative(x)
+    deriv[:,1:] = dx_hat.detach().data.numpy().reshape(4,2).T
+    return deriv.reshape(-1)
 
 if __name__ == "__main__":
   args = get_args()
