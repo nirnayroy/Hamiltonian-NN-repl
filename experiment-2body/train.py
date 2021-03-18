@@ -111,7 +111,7 @@ def train(args):
   fig.colorbar(img)
   plt.savefig('lrep.png')
   y0 = torch.tensor([0.4, 0.3, 1/np.sqrt(2), 1/np.sqrt(2)], requires_grad=True, dtype=torch.float32)
-  orbit = sample_orbit(model.time_derivative, [0,10], )
+  orbit = sample_orbit(model.time_derivative, [0,10], y0)
   print(orbit.y)
   plt.scatter(orbit.y[0], orbit.y[1])
   plt.savefig('orbit.png')
