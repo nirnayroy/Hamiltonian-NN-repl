@@ -76,7 +76,7 @@ def train(args):
 
     # train step
     ixs = torch.randperm(x.shape[0])[:args.batch_size]
-    x = torch.tensor(x[ixs], requires_grad=True, dtype=torch.float32)
+    x = x[ixs]
     x.to(device)
     dxdt_hat = model.time_derivative(x)
     y = torch.tensor(dxdt[ixs])
