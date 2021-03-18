@@ -76,7 +76,7 @@ def train(args):
 
     # train step
     ixs = torch.randperm(x.shape[0])[:args.batch_size]
-    x = x[ixs]
+    x = torch.tensor(x[ixs], requires_grad=True, dtype=torch.float32)
     x.to(device)
     dxdt_hat = model.time_derivative(x)
     y = torch.tensor(dxdt[ixs])
@@ -110,7 +110,7 @@ def train(args):
   img = ax.scatter(enc[:,0], enc[:,3], enc[:,2], c=enc[:,1], cmap=plt.hot())
   fig.colorbar(img)
   plt.savefig('lrep.png')
-  y0 = torch.tensor([0.4, 0.3, 1/np.sqrt(2), 1/np.sqrt(2)], dtype=torch.float32)
+  y0 = torch.tensor([[0.4, 0.3, 1/np.sqrt(2), 1/np.sqrt(2)]], dtype=torch.float32)
   orbit = sample_orbit(model.time_derivative, [0,10], y0)
   print(orbit.y)
   plt.scatter(orbit.y[0], orbit.y[1])
